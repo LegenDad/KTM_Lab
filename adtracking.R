@@ -1,0 +1,15 @@
+adt <- read.csv("Data/AD_Tracking/train_sample.csv")
+head(adt)
+str(adt)
+head(adt[!is.null(adt$attributed_time),])
+head(adt[adt$is_attributed>0,])
+library(dplyr)
+adt2 <- adt
+adt2$click_time <- as.POSIXct(adt2$click_time)
+table(adt2$is_attributed)
+adt3 <- adt2 %>% filter(adt2$is_attributed ==1)
+adt3$click_time <- as.POSIXct(adt3$click_time)
+adt3$attributed_time <- as.POSIXct(adt3$attributed_time)
+adt3$dwtime <- adt3$attributed_time -adt3$click_time
+head(sort(table(adt3$ip), decreasing = T))
+adt3 %>% filter(ip == 5314 | ip ==5348)
