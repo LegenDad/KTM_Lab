@@ -3,3 +3,5 @@
 .Rproj.user/
 KTM_Lab.Rproj
 Data/AD_Tracking/train_sample.csv
+.Rhistory
+.RData
