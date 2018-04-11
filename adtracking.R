@@ -41,3 +41,5 @@ adt3$attributed_time <- as.POSIXct(adt3$attributed_time)
 adt3$dwtime <- adt3$attributed_time -adt3$click_time
 head(sort(table(adt3$ip), decreasing = T))
 adt3 %>% filter(ip == 5314 | ip ==5348)
+
+#ubuntu
