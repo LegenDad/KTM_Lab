@@ -43,3 +43,22 @@ hist(height, prob=T, breaks = BPoint)
 
 plot(height, weight, type = "b")
 
+library(ggplot2)
+library(ggthemes)
+??diamonds
+ggplot(data = diamonds, aes(carat, price, colour = clarity)) +
+  geom_point() +
+  theme_wsj()
+
+g1 <- ggplot(data = diamonds, aes(carat, price, colour = clarity))
+g2 <- geom_line(alpha=0.5)
+g3 <- theme_wsj()
+
+g1 <- ggplot(data = DF, aes(height, weight, colour = bloodtype))
+g1 + g2 + g3
+
+g1 + g2 + g3 + geom_point(size=3, alpha=0.8)
+
+g4 <- facet_grid(.~sex)
+g1 + g2 + geom_point() + g3 + g4
+
