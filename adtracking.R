@@ -32,22 +32,33 @@ glm <- glm(is_attributed~ip+app+device+os+channel+click_hour+click_weekd,
 summary(glm)
 glm2 <- glm(is_attributed~ip+app+device+os+channel,family = binomial, adt2)
 summary(glm2)
+glm3 <- glm(is_attributed~app+device+os+channel+click_hour+click_weekd, 
+            family = binomial, adt2)
 anova(glm, test = "Chisq")
 anova(glm2, test = "Chisq")
-
+summary(glm3)
+anova(glm3, test = "Chisq")
 #install.packages("pscl")
 library(pscl)
 pR2(glm)
 pR2(glm2)
+pR2(glm3)
 format(1.334263e-01, scientific = F)
 format(1.199428e-01, scientific = F)
-format(1.396488e-01, scientific = F)
+format(6.722986e-02, scientific = F)
 
-
-######
-
+###
 library(dplyr)
+length(unique(adt2$ip)) / nrow(adt2)
+sum(duplicated(adt2$ip)) / nrow(adt2)
+length(unique(adt2$ip)) / nrow(adt2)+sum(duplicated(adt2$ip)) / nrow(adt2)
+
+(mtcars %>% add_count(cyl))$n
+mtcars %>% count(cyl)
+######
 head(sort(table(adt3$ip), decreasing = T))
+
+
 adt3 %>% filter(ip == 5314 | ip ==5348)
 
 
