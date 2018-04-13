@@ -1,0 +1,58 @@
+---
+title: "ADTracking_Plot"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Start
+```{r}
+adt <- read.csv("Data/AD_Tracking/train_sample.csv", stringsAsFactors = F)
+head(adt)
+str(adt)
+```
+
+```{r}
+names(adt)
+```
+
+```{r}
+plot(adt$channel, adt$app)
+```
+
+```{r}
+adt$click_time <- as.POSIXct(adt$click_time)
+par(mfrow=c(3,2))
+boxplot(adt$ip)
+boxplot(adt$app)
+boxplot(adt$device)
+boxplot(adt$os)
+boxplot(adt$channel)
+boxplot(adt$click_time)
+```
+```{r}
+par(mfrow=c(2,2))
+plot(adt$app~adt$device)
+plot(adt$app~adt$os)
+plot(adt$app~adt$channel)
+```
+
+```{r}
+plot(adt[,c(2:5)])
+```
+
+```{r}
+adt$click_hour <- as.factor(format(adt$click_time, "%H"))
+adt$click_weekd <- as.factor(format(adt$click_time, "%a"))
+head(adt)
+
+```
+
+```{r}
+par(mfrow=c(1,2))
+barplot(table(adt$click_hour))
+barplot(table(adt$click_weekd))
+```
+
