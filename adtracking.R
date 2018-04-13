@@ -23,6 +23,8 @@ adt2$dwtime>13000000
 sapply(adt2, function (x) sum(is.na(x)))
 
 
+#adt$click_hour <- as.factor(format(adt$click_time, "%H"))
+#adt$click_weekd <- as.factor(format(adt$click_time, "%a"))
 ######
 
 library(dplyr)
