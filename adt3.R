@@ -94,3 +94,13 @@ model.rf=randomForest(is_attributed~app+device+os+channel+click_hour+
 model.rf
 plot(model.rf)
 
+pred_rf <- predict(model.rf, adte)s
+confusionMatrix(pred_rf, adte$is_attributed)
+is(pred_rf)
+pr3 <- prediction(as.integer(pred_rf), adte$is_attributed)
+prf3 <- performance(pr3, measure = "tpr", x.measure = "fpr")
+plot(prf3)
+
+auc3 <- performance(pr3, measure = "auc")
+auc3 <- auc3@y.values[[1]]
+auc3
