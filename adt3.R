@@ -29,7 +29,7 @@ colnames(adt)
 adt_index<- createDataPartition(adt$is_attributed, p=0.7, list = F)
 adtr <- adt[adt_index,]
 adte <- adt[-adt_index,]
-
+table(adtr$is_attributed); table(adte$is_attributed)
 glm <- glm(is_attributed~app+device+os+channel+click_hour +
               ip_hw + ip_app + ip_dev + ip_os + ip_ch, 
             family = binomial, adtr)
