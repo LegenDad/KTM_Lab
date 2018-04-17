@@ -104,3 +104,41 @@ plot(prf3)
 auc3 <- performance(pr3, measure = "auc")
 auc3 <- auc3@y.values[[1]]
 auc3
+##### XGBOOST #####
+rm(list=ls())
+adt <- read.csv("Data/AD_Tracking/train_sample.csv", stringsAsFactors = F)
+y <- adt$is_attributed
+tri <- 1:nrow(adt)
+adt$click_time <- as.POSIXct(adt$click_time)
+range(adt$click_time)
+adt$click_hour <- format(adt$click_time, "%H")
+adt$click_weekd <- format(adt$click_time, "%a")
+#adt$click_hour <- as.factor(format(adt$click_time, "%H"))
+#adt$click_weekd <- as.factor(format(adt$click_time, "%a"))
+library(dplyr)
+colnames(adt)
+adt <- adt %>% add_count(ip, click_hour, click_weekd) 
+adt <- adt %>% add_count(ip, click_hour, app)
+adt <- adt %>% add_count(ip, click_hour, device)
+adt <- adt %>% add_count(ip, click_hour, os)
+adt <- adt %>% add_count(ip, click_hour, channel)
+head(adt)
+colnames(adt)[11:15] <- c("ip_hw", "ip_app", "ip_dev", "ip_os", "ip_ch")
+colnames(adt)
+head(adt)
+#install.packages("xgboost")
+library(xgboost)
+?xgb.DMatrix
+
+#dtest <- xgb.DMatrix(data = data.matrix(tr_te[-tri]))
+#tr_te <- tr_te[tri]
+#tri <- caret::createDataPartition(y, p = 0.9, list = F)
+#dtrain <- xgb.DMatrix(data = data.matrix(tr_te[tri]), label = y[tri])
+#dval <- xgb.DMatrix(data = data.matrix(tr_te[-tri]), label = y[-tri])
+#cols <- colnames(tr_te)
+#
+#rm(tr_te, y, tri); gc()
+
+
+args(save)
+example(save)
