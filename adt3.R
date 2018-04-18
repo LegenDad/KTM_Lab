@@ -108,14 +108,19 @@ auc3
 ##### XGBOOST #####
 rm(list=ls()); gc()
 adt <- read.csv("Data/AD_Tracking/train_sample.csv", stringsAsFactors = F)
-adt$click_time <- as.POSIXct(adt$click_time)
-range(adt$click_time)
-adt$click_hour <- format(adt$click_time, "%H")
-adt$click_weekd <- format(adt$click_time, "%a")
+library(lubridate)
+#adt$click_time <- as.POSIXct(adt$click_time)
+#range(adt$click_time)
+#adt$click_hour <- format(adt$click_time, "%H")
+#adt$click_weekd <- format(adt$click_time, "%a")
 #adt$click_hour <- as.factor(format(adt$click_time, "%H"))
 #adt$click_weekd <- as.factor(format(adt$click_time, "%a"))
+adt$click_hour <- hour(adt$click_time)
+adt$click_weekd <- wday(adt$click_time)
+
 library(dplyr)
 colnames(adt)
+str(adt)
 adt <- adt %>% add_count(ip, click_hour, click_weekd) 
 adt <- adt %>% add_count(ip, click_hour, app)
 adt <- adt %>% add_count(ip, click_hour, device)
@@ -129,14 +134,15 @@ head(adt)
 library(xgboost)
 library(caret)
 colnames(adt)
-colnames(adt[,-c(6,8)])
+colnames(adt[,-c(1,6:8)])
+set.seed(777)
 adt_index <- createDataPartition(adt$is_attributed, p=0.7, list = F)
 y <- adt[adt_index,]$is_attributed
 
-adtr <- adt[,-c(6,8)]
-
+adtr <- adt[,-c(1,6:8)]
+colnames(adtr)
+str(adtr)
 dtest <- xgb.DMatrix(data = data.matrix(adtr[-adt_index,]))
-str(dtest)
 tri <- createDataPartition(y, p = 0.9, list = F)
 dtrain <- xgb.DMatrix(data = data.matrix(adtr[adt_index,][tri,]), label = y[tri])
 dval <- xgb.DMatrix(data = data.matrix(adtr[adt_index,][-tri,]), label = y[-tri])
@@ -164,19 +170,17 @@ p <- list(objective = "binary:logistic",
           alpha = 43.2165,
           lambda = 74.6334,
           scale_pos_weight = 103,
-          nrounds = 2000)
+          nrounds = 3000)
 m_xgb <- xgb.train(p, dtrain, p$nrounds, list(val = dval), print_every_n = 50, 
                    early_stopping_rounds = 200)
 
 (imp <- xgb.importance(cols, model=m_xgb))
 xgb.plot.importance(imp, top_n = 10)
 predXG <- predict(m_xgb,dtest)
-predXG <- ifelse(predXG > 0.7,1,0)
+predXG <- ifelse(predXG > 0.5,1,0)
 sum(predXG)
-nrow(adt[-adt_index,])
 library(e1071)
-confusionMatrix(predXG, adt[-adt_index,]$is_attributed)
-
+confusionMatrix(as.factor(predXG), as.factor(adt[-adt_index,]$is_attributed))
 #install.packages("ROCR")
 library(ROCR)
 pr <- prediction(predXG, adt[-adt_index,]$is_attributed)
