@@ -25,10 +25,9 @@ colnames(adt)
 
 library(caret)
 #args(createDataPartition)
-colnames(adt)
-adt_index<- createDataPartition(adt$is_attributed, p=0.7, list = F)
+adt_index <- createDataPartition(adt$is_attributed, p=0.7, list = F)
 y <- adt$is_attributed
-
+#adt$is_attributed <- as.factor(adt$is_attributed)
 adtr <- adt %>% select(-ip, -click_time, -attributed_time)
 
 adte <- adtr[-adt_index,]
@@ -37,10 +36,9 @@ adtr <- adtr[adt_index,]
 colnames(adte)
 colnames(adtr)
 table(adtr$is_attributed); table(adte$is_attributed)
-
+str(adtr)
 ###### glm #####
-glm <- glm(is_attributed~., 
-           family = binomial, adtr)
+glm <- glm(is_attributed~., family = binomial, adtr)
 summary(glm)
 anova(glm, test = "Chisq")
 library(pscl)
