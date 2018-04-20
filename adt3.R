@@ -24,10 +24,8 @@ colnames(adt)[11:20] <- c("ip_hw", "ip_app", "ip_dev", "ip_os", "ip_ch",
 colnames(adt)
 
 library(caret)
-#args(createDataPartition)
 adt_index <- createDataPartition(adt$is_attributed, p=0.7, list = F)
 y <- adt$is_attributed
-#adt$is_attributed <- as.factor(adt$is_attributed)
 adtr <- adt %>% select(-ip, -click_time, -attributed_time)
 
 adte <- adtr[-adt_index,]
@@ -38,17 +36,14 @@ colnames(adtr)
 table(adtr$is_attributed); table(adte$is_attributed)
 str(adtr)
 ###### glm #####
-glm <- glm(is_attributed~., family = binomial, adtr)
+glm <- glm(as.factor(is_attributed)~., family = binomial, adtr)
 summary(glm)
-anova(glm, test = "Chisq")
 library(pscl)
 pR2(glm)
-format(3.510406e-01, scientific = F)
 pred_glm <- predict(glm, newdata = adte, type = "response")
-pred_glm2 <- ifelse(pred_glm > 0.5,1,0)
-sum(pred_glm2)
+#pred_glm2 <- ifelse(pred_glm > 0.5,1,0)
 library(e1071)
-confusionMatrix(as.factor(pred_glm2), as.factor(y[-adt_index]))
+#confusionMatrix(as.factor(pred_glm2), as.factor(y[-adt_index]))
 library(ROCR)
 pr <- prediction(pred_glm, y[-adt_index])
 prf <- performance(pr, measure = "tpr", x.measure = "fpr")
@@ -57,9 +52,24 @@ auc <- performance(pr, measure = "auc")
 auc <- auc@y.values[[1]]
 auc
 
-##### bayesglm #####
-library(arm)
-glm2 <- bayesglm(is_attributed~., family = binomial, adtr)
+##### Decision Tree #####
+library(rpart)
+rtree <- rpart(as.factor(is_attributed)~., adtr, method = "class")
+summary(rtree)
+pred_rt <- predict(rtree, adte, type = "class")
+pred_rt2 <- predict(rtree, adte, type = "prob")[,2]
+confusionMatrix(pred_rt,  as.factor(y[-adt_index]))
+pr2 <- prediction(pred_rt2,  y[-adt_index])
+prf2 <- performance(pr, measure = "tpr", x.measure = "fpr")
+plot(prf2)
+auc2 <- performance(pr2, measure = "auc")
+auc2 <- auc2@y.values[[1]]
+auc2
+
+
+
+p1<-as.character(predict(m1,test,type = "class"))
+confusionMatrix(p1,test$loan_category)
 summary(glm2)
 anova(glm2, test = "Chisq")
 pR2(glm2)
