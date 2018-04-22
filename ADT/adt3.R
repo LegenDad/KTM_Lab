@@ -66,18 +66,19 @@ auc2 <- performance(pr2, measure = "auc")
 auc2 <- auc2@y.values[[1]]
 auc2
 
-##### Random Forest #####
-library(randomForest)
-model.rf=randomForest(as.factor(is_attributed)~., adtr)
-model.rf2=randomForest(as.factor(is_attributed)~., adtr, importance = T)
-model.rf
-plot(model.rf)
-pred_rf <- predict(model.rf, adte)
-pr3 <- prediction(pred_rf, adte$is_attributed)
-pr3 <- prediction(pred_rf, adte$is_attributed)
-prf3 <- performance(pr3, measure = "tpr", x.measure = "fpr")
-plot(prf3)
-
-auc3 <- performance(pr3, measure = "auc")
-auc3 <- auc3@y.values[[1]]
-auc3
+##### Random Forest#####  
+#memory problem. move to adt_rf
+#library(randomForest)
+#model.rf=randomForest(as.factor(is_attributed)~., adtr)
+#model.rf
+#plot(model.rf)
+#pred_rf <- predict(model.rf, adte)
+#pr3 <- prediction(pred_rf, adte$is_attributed)
+#pr3 <- prediction(pred_rf, adte$is_attributed)
+#prf3 <- performance(pr3, measure = "tpr", x.measure = "fpr")
+#plot(prf3)
+#
+#auc3 <- performance(pr3, measure = "auc")
+#auc3 <- auc3@y.values[[1]]
+#auc3
+###### END #####
