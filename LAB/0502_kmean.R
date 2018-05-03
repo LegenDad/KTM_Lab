@@ -45,11 +45,16 @@ df$age <- ifelse(is.na(df$age), ave_age, df$age)
 summary(df$age)
 colnames(df)
 
-?kmeans
-?scale
 interests <- df[5:40]
 interests_z <- as.data.frame(lapply(interests, scale))
-
+interests_z2 <- lapply(interests, scale)
+str(interests_z2)
+interests_z3 <- sapply(interests, scale)
+interests_z4 <- as.data.frame(sapply(interests, scale))
+identical(interests_z, interests_z4)
+system.time(as.data.frame(lapply(interests, scale)))
+system.time(as.data.frame(sapply(interests, scale)))
+str(interests_z3)
 set.seed(2345)
 teen_clustes <- kmeans(interests_z, 5)
 teen_clustes$centers
