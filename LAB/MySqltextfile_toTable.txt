@@ -1,0 +1,90 @@
+[MySQL][Lab] 파일을 MySQL Table로 보내기
+
+
+학습 목표
+가. MySQL의 Table 데이터를 csv로 가져오기
+나. csv 파일을 MySQL Table로 올리기
+
+목차
+[MySQL][Lab] MySQL Table 데이터 csv로 가져오기
+1-1. mysql db에 접속 및 준비
+1-2. 데이터를 MySQL Table로 올리기
+
+
+1-1. mysql db에 접속 및 준비
+# mysql  --version 
+# 암호 재설정
+MYSQL 5.7 이상
+> UPDATE mysql.user SET authentication_string=PASSWORD('qwer1234') WHERE user='root';
+> flush privileges;
+
+$ mysql -u root mysql
+UPDATE mysql.user
+    SET Password=PASSWORD('1234')
+WHERE User='root';
+FLUSH PRIVILEGES;
+
+1-2 파일을 mysql Table로 import 시키기 
+
+# make_table.sql 
+drop table uitem;
+CREATE TABLE uitem (
+    movie_id INT,
+    movie_title VARCHAR(255),
+    release_date VARCHAR(255),
+    video_release_date VARCHAR(255),
+    imdb_url VARCHAR(255),
+    unknown INT,
+    action INT,
+    adventure INT,
+    animation INT,
+    children INT,
+    comedy INT,
+    crime INT,
+    documentary INT,
+    drama INT,
+    fantasy INT,
+    film_noir INT,
+    horror INT,
+    musical INT,
+    mystery INT,
+    romance INT,
+    sci_fi INT,
+    thriller INT,
+    war INT,
+    Western INT ) ;
+    
+drop table udata;
+CREATE TABLE udata (
+    userId INT,
+    itemId INT,
+    rating INT,
+    time VARCHAR(255)
+);
+    
+drop table uuser;
+CREATE TABLE uuser (
+    userId INT(5),
+    age INT(5),
+    gender VARCHAR(3),
+    occupation VARCHAR(255),
+    zipCode VARCHAR(255)
+);
+    
+E:\BigData\Lecture
+
+
+LOAD DATA INFILE 'E:/BigData/Lecture/u.item'
+INTO TABLE uitem
+      FIELDS TERMINATED BY '|';
+      
+LOAD DATA INFILE 'E:/BigData/Lecture/u_data.csv'
+INTO TABLE udata
+      FIELDS TERMINATED BY ',';
+      
+LOAD DATA INFILE 'E:/BigData/Lecture/u.user'
+INTO TABLE uuser
+      FIELDS TERMINATED BY '|';
+
+
+
