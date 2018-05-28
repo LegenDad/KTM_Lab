@@ -34,3 +34,5 @@ plt.scatter(X_scaled[:,0], X_scaled[:,1],
 plt.legend(['clusters 0', 'clusters 1'], loc='best')
 plt.xlabel('특성 0')
 plt.ylabel('특성 1')
+
+
