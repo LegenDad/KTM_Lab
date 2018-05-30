@@ -1,0 +1,16 @@
+show dbs
+use testdb
+show collections
+db.createCollection("cars")
+db.cars.find()
+db.cars.insert({name:'honda', make:'accord', year:'2010'})
+db.cars.insert({name: 'sonata', make:'hyundai', year:'2009'})
+db.cars.find()
+db.cars.update({name:'honda'}, {$set:{name:'ford'}})
+db.cars.remove({name:'honda2'})
+for(var i=0; i<10; i++) {db.cars.insert({"X":i})}
+
+db.supermarket.insert({name:'CJ', pty:'5', price:'1200'})
+db.supermarket.update({name:'CJ'}, {$set:{pty:'7', price:'1500'}})
+for (var i=1; i<5; i++) {db.supermarket.insert({name:'GS', pty:i, price:i*i})}
+for (var i=1; i<5; i++) {db.supermarket.insert({name:'item'+i, pty:i, price:i*i})}
