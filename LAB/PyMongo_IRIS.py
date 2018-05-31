@@ -20,7 +20,7 @@ mongo.database_names()
 len(iris.data)
 
 for x in range(0, len(iris.data)):
-    mongo.testdb.iris.insert({"SepalLength":iris.data[x][0],                              
+    mongo.testdb.iris.insert({"SepalLength":iris.data[x][0],
                               "SepalWidth":iris.data[x][1], 
                               "PetalLength":iris.data[x][2],
                               "PetalWidth":iris.data[x][3],

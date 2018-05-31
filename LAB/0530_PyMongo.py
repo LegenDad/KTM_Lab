@@ -37,3 +37,19 @@ testdb.games.insert(tracer)
 
 for doc in testdb.games.find():
     print(doc)
+
+
+for post in testdb.supermarket.find():
+    print(post)
+    
+print(testdb.supermakret.find({"price":500}).count())
+print(testdb.supermarket.find({"name":'GS'}).count())
+print(testdb.supermarket.find({"pty":1}).count())
+
+
+print(testdb.supermarket.find({"pty":  {"gt":3}  }).count())
+print(testdb.supermakret.find({"price": {"gt":3} }).count())
+
+
+for post in testdb.supermakret.find().sort('name'):
+    print(post)
